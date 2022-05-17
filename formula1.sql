@@ -30,7 +30,7 @@ CREATE TABLE tim(
 CREATE TABLE vozac(
    id_vozac INTEGER PRIMARY KEY,
    id_tim INTEGER NOT NULL,
-   id_auto INTEGER NOT NULL;
+   id_auto INTEGER NOT NULL,
    ime VARCHAR(30) NOT NULL,
    prezime VARCHAR(30) NOT NULL,
    odabrani_broj INTEGER NOT NULL,
@@ -103,78 +103,111 @@ CREATE TABLE sezona(
 
 
 -- PROMJENE I OGRANIČENJA NA TABLICAMA
+/* KAD DODAJETE OGRANICENJA SAMO COPY JEDAN OD OVIH I id_len_ck_2 ili  id_rng_ck_2 
+I PAZITE NA ID KOD POJEDINIH RELACIJA <3
+*/
 ALTER TABLE staza
-	ADD CONSTRAINT id_len_ck CHECK (length(id) = 4),
-   ADD CONSTRAINT id_rng_ck CHECK (id >= 1000 AND id <= 1999),
+	ADD CONSTRAINT id_len_ck CHECK (length(id_staza) = 4),
+   ADD CONSTRAINT id_rng_ck CHECK (id_staza >= 1000 AND id_staza <= 1999),
    ADD CONSTRAINT duzina_rng_ck CHECK (duzina_m >= 1000 AND duzina_m <= 99999);
    
 ALTER TABLE tim
-	ADD CONSTRAINT id_len_ck CHECK (length(id) = 3),
-   ADD CONSTRAINT id_rng_ck CHECK (id >= 100 AND id <= 999);
+	ADD CONSTRAINT id_len_ck_1 CHECK (length(id_tim) = 3),
+   ADD CONSTRAINT id_rng_ck_1 CHECK (id_tim >= 100 AND id_tim <= 999);
 
 ALTER TABLE sponzor
-   ADD CONSTRAINT id_len_ck CHECK (length(id) = 4),
-   ADD CONSTRAINT id_rng_ck CHECK (id >= 4000 AND id <= 4999),
+   ADD CONSTRAINT id_len_ck_2 CHECK (length(id_sponzor) = 4),
+   ADD CONSTRAINT id_rng_ck_2 CHECK (id_sponzor >= 4000 AND id_sponzor <= 4999),
    ADD CONSTRAINT payout_ck CHECK (isplacen_novac >= 500000);
 
 ALTER TABLE utrka
-   ADD CONSTRAINT id_len_ck CHECK (length(id) = 4),
-   ADD CONSTRAINT id_rng_ck CHECK (id >= 3000 AND id <= 3999);
+   ADD CONSTRAINT id_len_ck_3 CHECK (length(id_utrka) = 4),
+   ADD CONSTRAINT id_rng_ck_3 CHECK (id_utrka >= 3000 AND id_utrka <= 3999);
+   
+   
+ALTER TABLE automobil
+   ADD CONSTRAINT id_len_ck_4 CHECK (length(id_auto) = 4),
+   ADD CONSTRAINT id_rng_ck_4 CHECK (id_auto >= 5000 AND id_auto <= 5999);
+   
+ALTER TABLE vozac
+	ADD CONSTRAINT id_len_ck_5 CHECK (length(id_vozac) = 2),
+   ADD CONSTRAINT id_rng_ck_5 CHECK (id_vozac >= 1 AND id_vozac <= 99);   
+
+
 
 
 -- POPUNJAVANJE TABLICE // WIP 
-INSERT INTO tim VALUES  (id_tim, naziv, voditelj, pobjede, osvojeno_podija, sjediste, kod_sasija, utrke),
+INSERT INTO tim VALUES  
                         (101, 'McLaren F1 Team', 'Andreas Seidl', 182, 488, 'Woking, Surrey, Velika Britanija', 'MCL35M', 880),
                         (102, 'Mercedes AMG Petronas F1 Team', 'Toto Wolff', 124, 264, 'Brackley, Northamptonshire, Velika Britanija', 'Mercedes F1 W12', 249),
                         (103, 'Scuderia Ferrari', 'Mattia Binotto', 238, 778, 'Maranello, Italija', '	F1-75', 1030),
-                        (104, 'Williams Racing', '	Jost Capito', 114, 312, 'Grove, Oxfordshire, Velika Britanija', 'Williams FW43', 744),
+                        (104, 'Williams Racing', 'Jost Capito', 114, 312, 'Grove, Oxfordshire, Velika Britanija', 'Williams FW43', 744),
                         (105, 'Scuderia AlphaTauri Honda', 'Franz Tost', 1, 1, 'Faenza, Italija', 'AlphaTauri AT02', 17),
-                        (107, 'Aston Martin Cognizant Formula One Team',' Lawrence Stroll I Otmar Szafnauer', 0, 1, 'Silverstone, Velika Britanija','Aston Martin AMR21', 11),
-                        (108, 'Alpine F1 Team', 'Laurent Rossi / Davide Brivio', 1, 22, 'Enstone, Engleska, Velika Britanija', '	Alpine A521', 20),
-                        (111, 'Sauber F1 Team', 'Monisha Kaltenborn', 0, 10, 'Hinwil, Švicarska', 'Sauber C37', 373),
-                        (112, 'Force India F1 Team', 'Colin Kolles', 0, 6, 'Silverstone, Northamptonshire, Velika Britanija', 'Force India VJM11', 212),
-                        (113, 'Red Bull Toro Rosso Honda', 'Franz Tost', 1, 2, 'Faenza, Italija', 'Toro Rosso STR14', 259),
-                        -- (114,'Team Penske', 'Tim Cindric', 1, 0, 'Mooresville, North Carolina, Sjedinjene Američke Države', 'sasija', 41)  <- Tim iz 1970-ih
-                        (115, 'Haas F1 Team', 'Günther Steiner', 0, 0, 'Banbury, Oxfordshire, Velika Britanija', 'VF-22', 122);
-                        (111, 'Manor Racing MRT', 'Dave Ryan', 0, 0, 'Banbury, Oxfordshire, Velika Britanija', 'MRT05', 21),
-                        (111, 'Marussia F1 Team', 'John Booth', 0, 0, 'Banbury, Oxfordshire, Velika Britanija', 'MR03B', 74),
-                        (111, 'HRT Formula 1 Team', 'Colin Kolles', 0, 0, 'Madrid, Španjolska', 'F112', 56),
-                        (111, 'Caterham F1 Team', 'Tony Fernandes', 0, 0, 'Leafield, Oxfordshire, Velika Britanija', 'Caterham CT5', 94),
-                        (111, 'Lotus F1 Team', 'Gérard Lopez', 2, 25, 'Enstone, Oxfordshire, Velika Britanija', 'E23', 77);
+                        (106, 'Aston Martin Cognizant Formula One Team',' Lawrence Stroll I Otmar Szafnauer', 0, 1, 'Silverstone, Velika Britanija','Aston Martin AMR21', 11),
+                        (107, 'Alpine F1 Team', 'Laurent Rossi / Davide Brivio', 1, 22, 'Enstone, Engleska, Velika Britanija', 'Alpine A521', 20),
+                        (108, 'Sauber F1 Team', 'Monisha Kaltenborn', 0, 10, 'Hinwil, Švicarska', 'Sauber C37', 373),
+                        (109, 'Force India F1 Team', 'Colin Kolles', 0, 6, 'Silverstone, Northamptonshire, Velika Britanija', 'Force India VJM11', 212),
+                        (110, 'Red Bull Toro Rosso Honda', 'Franz Tost', 1, 2, 'Faenza, Italija', 'Toro Rosso STR14', 259),
+                        (111, 'Haas F1 Team', 'Günther Steiner', 0, 0, 'Banbury, Oxfordshire, Velika Britanija', 'VF-22', 122),
+                        (112, 'Manor Racing MRT', 'Dave Ryan', 0, 0, 'Banbury, Oxfordshire, Velika Britanija', 'MRT05', 21),
+                        (113, 'Marussia F1 Team', 'John Booth', 0, 0, 'Banbury, Oxfordshire, Velika Britanija', 'MR03B', 74),
+                        (114, 'HRT Formula 1 Team', 'Colin Kolles', 0, 0, 'Madrid, Španjolska', 'F112', 56),
+                        (115, 'Caterham F1 Team', 'Tony Fernandes', 0, 0, 'Leafield, Oxfordshire, Velika Britanija', 'Caterham CT5', 94),
+                        (116, 'Lotus F1 Team', 'Gérard Lopez', 2, 25, 'Enstone, Oxfordshire, Velika Britanija', 'E23', 77),
+                        (117,'Red Bull Racing Oracle', 'Christian Horner', 62, 170, 'Christian Horner', 'Red Bull RB18',286),
+                        (118,'Alfa Romeo Racing Orlen', 'Frédéric Vasseur', 10, 26, 'Hinwil, Švicarska', 'Alfa Romeo C39', 131),
+                        (119,'Renault DP World F1 Team', 'Cyril Abiteboul', 35, 100, ' Enstone, Oxfordshire, Velika Britanija', 'Renault R.S.20', 383),
+                        (120,'BWT Racing Point F1 Team',NULL, 1, 4, 'Silverstone, Velika Britanija', 'Racing Point RP19', 47)
+					;
 
-                         
-
-                      /*
-                      (100,'Red Bull Racing Oracle', 'Christian Horner', 62, 170, 'Christian Horner', 'Red Bull RB18',286),
-                      (106,'Alfa Romeo Racing Orlen', 'Frédéric Vasseur', 10, 26, 'Hinwil, Švicarska', 'Alfa Romeo C39', 131),
-                       (109,'Renault DP World F1 Team', 'Cyril Abiteboul', 35, 100, ' Enstone, Oxfordshire, Velika Britanija', '	Renault R.S.20', 383),
-                        (110,'BWT Racing Point F1 Team',NULL, 1, 4, 'Silverstone, Velika Britanija', 'Racing Point RP19', 47),
-                      */
-
-
+#ID JE U RANGU OD 1->99 MOZEMO POVECAT AKO ZAFALI
 INSERT INTO vozac VALUES   /*2017*/
-                           (id, id_tim,   id_auto,  'Felipe', 'Massa', 19,  '25.4.1981.','brazilsko', 0, 41, 1167, 15),
-                           (id, id_tim,   id_auto,  'Jolyon', 'Palmer', 30,  '20.1.1991.','britansko', 0, 0, 35, 0)
-                           (id, id_tim,   id_auto,  'Pascal', 'Wehrlein', 94,  '18.10.1994.','njemačko', 0, 3, 6, 3),
-                           (id, id_tim,   id_auto,  'Daniil', 'Kvyat', 26,  '26.4.1994.','ruska', 0, 3, 202, 1),
-                           (id, id_tim,   id_auto,  'Antonio' , 'Giovinazzi', 99,  '14.12.1993.','talijanska', 0, 0, 21, 0),
+                           (1,  id_auto,  'Felipe', 'Massa', 19,  '25.4.1981.','brazilsko', 0, 41, 1167, 15),
+                           (2,  id_auto,  'Jolyon', 'Palmer', 30,  '20.1.1991.','britansko', 0, 0, 35, 0),
+                           (3,  id_auto,  'Pascal', 'Wehrlein', 94,  '18.10.1994.','njemačko', 0, 3, 6, 3),
+                           (4,  id_auto,  'Daniil', 'Kvyat', 26,  '26.4.1994.','ruska', 0, 3, 202, 1),
+                           (5,  id_auto,  'Antonio' , 'Giovinazzi', 99,  '14.12.1993.','talijanska', 0, 0, 21, 0),
 
                            /*2016*/
-                           (id, id_tim,   id_auto,  'Jenson', 'Button', 22,  '19.1.1980.','britanska', 1, 50, 1235, 8)                           
-                           (id, id_tim,   id_auto,  'Esteban', 'Gutierrez', 21,  '5.8.1991.','meksički', 0, 0, 6, 1),                           
-                           (id, id_tim,   id_auto,  'Rio', 'Haryanto', 88,  '22.1.1993.','indonezijsko', 0, 0, 0, 0),
+                           (6,  id_auto,  'Jenson', 'Button', 22,  '19.1.1980.','britanska', 1, 50, 1235, 8),                           
+                           (7,  id_auto,  'Esteban', 'Gutierrez', 21,  '5.8.1991.','meksički', 0, 0, 6, 1),                           
+                           (8,  id_auto,  'Rio', 'Haryanto', 88,  '22.1.1993.','indonezijsko', 0, 0, 0, 0),
 
                            /*2015*/
-                           (id, id_tim,   id_auto,  'Roberto', 'Merhi', 98,  '22.3.1991.','španjolsko', 0, 0, 0, 0),
-                           (id, id_tim,   id_auto,  'Nico', 'Rosberg', 6,  '27.6.1985.','njemačko', 1, 57, 1594.5, 20),
-                           (id, id_tim,   id_auto,  'Felipe', 'Nasr', 12,  '21.8.1992.','brazilsko', 0, 0, 29, 0),
-                           (id, id_tim,   id_auto,  'Pastor', 'Maldonado', 13,  '9.3.1985.','venecuelanski', 0, 1, 76, 0)
-                           (id, id_tim,   id_auto,  'Alexander', 'Rossi', 53,  '25.9.1991.','američko', 0, 25, osvojeno_bodova, odvozeno_najbrzih_krugova)x
-                           (id, id_tim,   id_auto,  'ime', 'prezime', odabrani_broj,  'datum_rodenja','nacionalnost', osvojeno_naslova_prvaka, osvojeno_podija, osvojeno_bodova, odvozeno_najbrzih_krugova)
-                           (id, id_tim,   id_auto,  'ime', 'prezime', odabrani_broj,  'datum_rodenja','nacionalnost', osvojeno_naslova_prvaka, osvojeno_podija, osvojeno_bodova, odvozeno_najbrzih_krugova)
-
-INSERT INTO auto VALUES (id_auto, zavrseno_utrka, vrsta_motora, proizvodac_guma);
-
+                           (9,  id_auto,  'Roberto', 'Merhi', 98,  '22.3.1991.','španjolsko', 0, 0, 0, 0),
+                           (10, id_auto,  'Nico', 'Rosberg', 6,  '27.6.1985.','njemačko', 1, 57, 1594.5, 20),
+                           (11, id_auto,  'Felipe', 'Nasr', 12,  '21.8.1992.','brazilsko', 0, 0, 29, 0),
+                           (12, id_auto,  'Pastor', 'Maldonado', 13,  '9.3.1985.','venecuelanski', 0, 1, 76, 0),
+                           (13, id_auto,  'Alexander', 'Rossi', 53,  '25.9.1991.','američko', 0, 25, osvojeno_bodova, odvozeno_najbrzih_krugova),
+                           (14, id_auto,  'ime', 'prezime', odabrani_broj,  'datum_rodenja','nacionalnost', osvojeno_naslova_prvaka, osvojeno_podija, osvojeno_bodova, odvozeno_najbrzih_krugova),
+                           (15, id_auto,  'ime', 'prezime', odabrani_broj,  'datum_rodenja','nacionalnost', osvojeno_naslova_prvaka, osvojeno_podija, osvojeno_bodova, odvozeno_najbrzih_krugova)
+                           ;
+##POKUŠAJTE DA ID OD AUTOMOBILA IDE NA ZNAMENKU OD VOZACA (5001-1)
+INSERT INTO automobil VALUES 
+						/*2012--2014*/
+						(5000, id_vozac, 'V8', 'Pirelli'),
+                        /*2015--danas*/
+                        ##############
+                        /*2017*/
+						(5001, 1, 'V6 turbo hybrid'),
+                        (5002, 2, 'V6 turbo hybrid'),
+                        (5003, 3, 'V6 turbo hybrid'),
+                        (5004, 4, 'V6 turbo hybrid'),
+                        (5005, 5, 'V6 turbo hybrid'),
+                        /*2016*/
+                        (5006, 6, 'V6 turbo hybrid'),
+                        (5007, 7, 'V6 turbo hybrid'),
+                        (5008, 8, 'V6 turbo hybrid'),
+                        
+                        /*2015*/
+                        (5009, 9, 'V6 turbo hybrid'),
+                        (5010, 10, 'V6 turbo hybrid'),
+                        (5011, 11, 'V6 turbo hybrid'),
+                        (5012, 12, 'V6 turbo hybrid'),
+                        (5013, 13, 'V6 turbo hybrid'),
+                        (5014, 14, 'V6 turbo hybrid'),
+                        (5015, 15, 'V6 turbo hybrid')
+                        ;
 
 -- SPONZORI // LISTA JE SMANJENA ZBOG OGROMNE KOLIČINE PODATAKA GLEDAJUĆI DA SVAKI TIM IMA PO MINIMALNO 20 SPONZORA.
 INSERT INTO sponzor VALUES (4001, 'Petronas', 100000000),
